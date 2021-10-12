@@ -1,9 +1,8 @@
 import pygame
 from board import Board
-import time
 
 class main:
-    def __init__(self,pixelSize = 5, dimension = 100):
+    def __init__(self,pixelSize = 10, dimension = 100):
         pygame.init()
         self.pixelSize = pixelSize
         self.dimension = dimension
@@ -23,23 +22,18 @@ class main:
                 if (event.type == pygame.QUIT):
                     loop = False
 
-            self.screen.fill((0,0,0)) 
             board.update(board.boardA,board.boardB)
+            #create and resize image of the board
             img = pygame.surfarray.make_surface(board.boardB)
             img = pygame.transform.scale(img, (self.dimension * self.pixelSize,self.dimension * self.pixelSize))
+
+            #draw to the screen
+            self.screen.fill((0,0,0)) 
             self.screen.blit(img,(0,0))
             pygame.display.flip()
 
-
-            
-            self.screen.fill((0,0,0))
-            board.update(board.boardB,board.boardA)
-            img = pygame.surfarray.make_surface(board.boardA)
-            img = pygame.transform.scale(img, (self.dimension * self.pixelSize,self.dimension * self.pixelSize))
-            self.screen.blit(img,(0,0))
-            pygame.display.flip()
-
-            
+            #swap boards a and b
+            board.boardA,board.boardB = board.boardB,board.boardA
         pygame.quit()
 
 if __name__ == "__main__":

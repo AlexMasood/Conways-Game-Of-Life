@@ -3,6 +3,7 @@ import numpy as np
 class Board:
     def __init__(self,dimension):
         self.dimensions = dimension
+        #2 boards are used to prevent repeated creation and deletion
         self.boardA = np.empty([dimension,dimension])
         self.boardB = np.empty([dimension,dimension])
         
@@ -11,14 +12,15 @@ class Board:
     
 
     def update(self,currentBoard,newBoard):
-        #newBoard = currentBoard.copy()
         dimension = self.dimensions
         for row in range(dimension):
             for col in range(dimension):
+                #get neighbours
                 total = (currentBoard[row,(col-1)%dimension] + currentBoard[row,(col+1)%dimension] +
                     currentBoard[(row-1)%dimension,col] + currentBoard[(row+1)%dimension,col] +
                     currentBoard[(row-1)%dimension,(col-1)%dimension] + currentBoard[(row-1)%dimension,(col+1)%dimension] +
                     currentBoard[(row+1)%dimension,(col-1)%dimension] + currentBoard[(row+1)%dimension,(col+1)%dimension])
+                #applying the rules
                 if (currentBoard[row,col] == 1):
                     if (total < 2) or (total > 3):
                         newBoard[row,col] = 0
@@ -29,4 +31,3 @@ class Board:
                         newBoard[row,col] = 1
                     else:
                         newBoard[row,col] = 0
-        return newBoard
