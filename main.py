@@ -1,37 +1,48 @@
 import pygame
-import numpy as np
+from board import Board
+import time
+
+class main:
+    def __init__(self,pixelSize = 10, dimension = 100):
+        pygame.init()
+        self.pixelSize = pixelSize
+        self.dimension = dimension
+        self.setupScreen()
+        self.run()
 
 
-def randomBoard(dim):
-    boardA = np.random.choice([0,1], dim*dim, p=[0.8, 0.2]).reshape(dim, dim)
-    boardB = boardA.copy()
-    return boardA, boardB
+    def setupScreen(self):
+        pygame.display.set_mode((self.dimension*self.pixelSize,self.dimension*self.pixelSize))
+        self.screen = pygame.display.get_surface()
 
-def update(currentBoard,newBoard):
-    dimension = len(currentBoard)
-    for row in range(dimension):
-        for col in range(dimension):
-            total = (currentBoard[row,(col-1)%dimension] + currentBoard[row,(col+1)%dimension] +
-                currentBoard[(row-1)%dimension,col] + currentBoard[(row+1)%dimension,col] +
-                currentBoard[(row-1)%dimension,(col-1)%dimension] + currentBoard[(row-1)%dimension,(col+1)%dimension] +
-                currentBoard[(row+1)%dimension,(col-1)%dimension] + currentBoard[(row+1)%dimension,(col+1)%dimension])
-            
-            if (currentBoard[row,col] == 1):
-                if (total < 2) or (total > 3):
-                    newBoard[row,col] = 0
-            else:
-                if (total == 3):
-                    newBoard[row,col] = 1
+    def run(self):
+        board = Board(self.dimension)
+        board.randomBoard()
+        loop = True
+        while loop:
+            for event in pygame.event.get():
+                if (event.type == pygame.QUIT):
+                    loop = False
 
-    return newBoard
-boardA,boardB = randomBoard(10)
-print(boardA)
-print("#####")
-boardB = update(boardA,boardB)
-print(boardB)
-print("#####")
-boardA = update(boardB,boardA)
-print(boardA)
-print("#####")
+            self.screen.fill((0,0,0))
+            board.boardB = board.update(board.boardA,board.boardB)
+            img = pygame.surfarray.make_surface(board.boardB)
+            img = pygame.transform.scale(img, (self.dimension * self.pixelSize,self.dimension * self.pixelSize))
+            self.screen.blit(img,(0,0))
+            #self.drawBoard(board.boardB)
+            pygame.display.flip()
+            time.sleep(0.5)
 
 
+            self.screen.fill((0,0,0))
+            board.boardA = board.update(board.boardB,board.boardA)
+            img = pygame.surfarray.make_surface(board.boardA)
+            img = pygame.transform.scale(img, (self.dimension * self.pixelSize,self.dimension * self.pixelSize))
+            self.screen.blit(img,(0,0))
+            #self.drawBoard(board.boardA)
+            pygame.display.flip()
+            time.sleep(0.5)
+        pygame.quit()
+
+if __name__ == "__main__":
+    main()
