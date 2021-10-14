@@ -1,8 +1,9 @@
 import pygame
+from pygame.constants import KEYDOWN
 from board import Board
-
+import numpy
 class main:
-    def __init__(self,pixelSize = 10, dimension = 100):
+    def __init__(self,pixelSize = 20, dimension = 50):
         pygame.init()
         self.pixelSize = pixelSize
         self.dimension = dimension
@@ -17,14 +18,29 @@ class main:
         board = Board(self.dimension)
         board.randomBoard()
         loop = True
+        update = True
         while loop:
             for event in pygame.event.get():
                 if (event.type == pygame.QUIT):
                     loop = False
+                if (event.type == KEYDOWN):
+                    if(pygame.key.get_pressed()[pygame.K_SPACE]):
+                        update = not update
+                    if(pygame.key.get_pressed()[pygame.K_RETURN]):
+                        board.resetBoard()
+                    if(pygame.key.get_pressed()[pygame.K_r]):
+                        board.randomBoard()
+                if(pygame.mouse.get_pressed()[0]):#left
+                    pos = pygame.mouse.get_pos()
+                    board.boardA[int(pos[0]/self.pixelSize)][int(pos[1]/self.pixelSize)] = 1
 
-            board.update(board.boardA,board.boardB)
+                if(pygame.mouse.get_pressed()[2]):#right
+                    pos = pygame.mouse.get_pos()
+                    board.boardA[int(pos[0]/self.pixelSize)][int(pos[1]/self.pixelSize)] = 0
+
+            
             #create and resize image of the board
-            img = pygame.surfarray.make_surface(board.boardB)
+            img = pygame.surfarray.make_surface(board.boardA)
             img = pygame.transform.scale(img, (self.dimension * self.pixelSize,self.dimension * self.pixelSize))
 
             #draw to the screen
@@ -32,8 +48,10 @@ class main:
             self.screen.blit(img,(0,0))
             pygame.display.flip()
 
-            #swap boards a and b
-            board.boardA,board.boardB = board.boardB,board.boardA
+            if(update):
+                board.update(board.boardA,board.boardB)
+                #swap boards a and b
+                board.boardA,board.boardB = board.boardB,board.boardA
         pygame.quit()
 
 if __name__ == "__main__":

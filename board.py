@@ -10,7 +10,10 @@ class Board:
     def randomBoard(self):
         self.boardA = np.random.choice([0,1], self.dimensions*self.dimensions, p=[0.8, 0.2]).reshape(self.dimensions, self.dimensions)
     
-
+    def resetBoard(self):
+        self.boardA = np.zeros((self.dimensions,self.dimensions))
+        self.boardB = np.zeros((self.dimensions,self.dimensions))
+    
     def update(self,currentBoard,newBoard):
         dimension = self.dimensions
         for row in range(dimension):
