@@ -8,4 +8,5 @@ Implementation of Conway's Game of life in python using numpy and pygame to rend
   Random board - "r"\
   Save board - "s"\
   Open board - "o"\
+  Next step - "n"\
 ![](cgol-gif.gif)
