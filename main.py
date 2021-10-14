@@ -30,6 +30,10 @@ class main:
                         board.resetBoard()
                     if(pygame.key.get_pressed()[pygame.K_r]):
                         board.randomBoard()
+                    if(pygame.key.get_pressed()[pygame.K_s]):
+                        board.saveBoard()
+                    if(pygame.key.get_pressed()[pygame.K_o]):
+                        board.loadBoard()
                 if(pygame.mouse.get_pressed()[0]):#left
                     pos = pygame.mouse.get_pos()
                     board.boardA[int(pos[0]/self.pixelSize)][int(pos[1]/self.pixelSize)] = 1
