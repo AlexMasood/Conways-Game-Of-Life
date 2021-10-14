@@ -1,6 +1,6 @@
 # Conways-Game-Of-Life
 Implementation of Conway's Game of life in python using numpy and pygame to render the board\
-Controls:\
+# Controls:\
   Pause game - "space bar"\
   Create cell - "left mouse click"\
   Delete cell - "right mouse click"\
