@@ -6,4 +6,6 @@ Implementation of Conway's Game of life in python using numpy and pygame to rend
   Delete cell - "right mouse click"\
   Reset game - "enter"\
   Random board - "r"\
+  Save board - "s"\
+  Open board - "o"\
 ![](cgol-gif.gif)
