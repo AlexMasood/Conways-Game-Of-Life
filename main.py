@@ -3,18 +3,18 @@ from pygame.constants import KEYDOWN
 from board import Board
 import numpy
 class main:
-    def __init__(self,pixelSize = 20, dimension = 50):
+    def __init__(self,pixelSize = 10, dimension = 100, colour = True):
         pygame.init()
         self.pixelSize = pixelSize
         self.dimension = dimension
         self.setupScreen()
-        self.run()
+        self.run(colour)
 
     def setupScreen(self):
         pygame.display.set_mode((self.dimension*self.pixelSize,self.dimension*self.pixelSize))
         self.screen = pygame.display.get_surface()
 
-    def run(self):
+    def run(self,colour):
         board = Board(self.dimension)
         board.randomBoard()
         loop = True
@@ -36,21 +36,27 @@ class main:
                         board.loadBoard()
                     if(pygame.key.get_pressed()[pygame.K_n]):
                         update = False
-                        board.update(board.boardA,board.boardB)
+                        board.update(board.boardA,board.boardB,colour)
                         board.boardA,board.boardB = board.boardB,board.boardA
 
                 if(pygame.mouse.get_pressed()[0]):#left
                     pos = pygame.mouse.get_pos()
                     board.boardA[int(pos[0]/self.pixelSize)][int(pos[1]/self.pixelSize)] = 1
+                    board.colourBoard[int(pos[0]/self.pixelSize)][int(pos[1]/self.pixelSize)] = 1
 
                 if(pygame.mouse.get_pressed()[2]):#right
                     pos = pygame.mouse.get_pos()
                     board.boardA[int(pos[0]/self.pixelSize)][int(pos[1]/self.pixelSize)] = 0
+                    board.colourBoard[int(pos[0]/self.pixelSize)][int(pos[1]/self.pixelSize)] = 0
 
             
             #create and resize image of the board
-            img = pygame.surfarray.make_surface(board.boardA)
-            img = pygame.transform.scale(img, (self.dimension * self.pixelSize,self.dimension * self.pixelSize))
+            if(colour == True):
+                img = pygame.surfarray.make_surface(board.colourBoard)
+                img = pygame.transform.scale(img, (self.dimension * self.pixelSize,self.dimension * self.pixelSize))
+            else:
+                img = pygame.surfarray.make_surface(board.boardA)
+                img = pygame.transform.scale(img, (self.dimension * self.pixelSize,self.dimension * self.pixelSize))
 
             #draw to the screen
             self.screen.fill((0,0,0)) 
@@ -58,7 +64,7 @@ class main:
             pygame.display.flip()
 
             if(update):
-                board.update(board.boardA,board.boardB)
+                board.update(board.boardA,board.boardB,colour)
                 #swap boards a and b
                 board.boardA,board.boardB = board.boardB,board.boardA
         pygame.quit()

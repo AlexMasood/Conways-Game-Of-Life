@@ -7,6 +7,7 @@ class Board:
         #2 boards are used to prevent repeated creation and deletion
         self.boardA = np.empty([dimension,dimension])
         self.boardB = np.empty([dimension,dimension])
+        self.colourBoard = np.empty([dimension,dimension])
     
     def saveBoard(self):
         savetxt("data.csv",self.boardA, delimiter=",")
@@ -20,8 +21,10 @@ class Board:
     def resetBoard(self):
         self.boardA = np.zeros((self.dimensions,self.dimensions))
         self.boardB = np.zeros((self.dimensions,self.dimensions))
+        self.colourBoard = np.zeros((self.dimensions,self.dimensions))
 
-    def update(self,currentBoard,newBoard):
+    def update(self,currentBoard,newBoard,colour):
+        
         dimension = self.dimensions
         for row in range(dimension):
             for col in range(dimension):
@@ -31,13 +34,34 @@ class Board:
                     currentBoard[(row-1)%dimension,(col-1)%dimension] + currentBoard[(row-1)%dimension,(col+1)%dimension] +
                     currentBoard[(row+1)%dimension,(col-1)%dimension] + currentBoard[(row+1)%dimension,(col+1)%dimension])
                 #applying the rules
-                if (currentBoard[row,col] == 1):
-                    if (total < 2) or (total > 3):
-                        newBoard[row,col] = 0
-                    else:
-                        newBoard[row,col] = 1
+                self.conwaysRules(currentBoard,newBoard,row,col,total,colour)
+                
+        
+    def conwaysRules(self,currentBoard,newBoard,row,column,neighbours,colour):
+        if(colour == True):
+            if (currentBoard[row,column] >= 1):
+                if (neighbours < 2) or (neighbours > 3):
+                    newBoard[row,column] = 0
+                    self.colourBoard[row,column] = 0
                 else:
-                    if (total == 3):
-                        newBoard[row,col] = 1
-                    else:
-                        newBoard[row,col] = 0
+                    newBoard[row,column] = 1
+                    if(self.colourBoard[row,column] != 127):
+                        self.colourBoard[row,column] +=1
+            else:
+                if (neighbours == 3):
+                    newBoard[row,column] = 1
+                    self.colourBoard[row,column] = 1
+                else:
+                    newBoard[row,column] = 0
+        else:
+            if (currentBoard[row,column] >= 1):
+                if (neighbours < 2) or (neighbours > 3):
+                    newBoard[row,column] = 0
+                else:
+                    newBoard[row,column] = 1
+            else:
+                if (neighbours == 3):
+                    newBoard[row,column] = 1
+                    self.colourBoard[row,column] = 1
+                else:
+                    newBoard[row,column] = 0
