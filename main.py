@@ -34,9 +34,11 @@ class main:
                         board.saveBoard()
                     if(pygame.key.get_pressed()[pygame.K_o]):
                         board.loadBoard()
+                    if(pygame.key.get_pressed()[pygame.K_c]):
+                        colour = not colour
                     if(pygame.key.get_pressed()[pygame.K_n]):
                         update = False
-                        board.update(board.boardA,board.boardB,colour)
+                        board.update(board.boardA,board.boardB)
                         board.boardA,board.boardB = board.boardB,board.boardA
 
                 if(pygame.mouse.get_pressed()[0]):#left
@@ -64,7 +66,7 @@ class main:
             pygame.display.flip()
 
             if(update):
-                board.update(board.boardA,board.boardB,colour)
+                board.update(board.boardA,board.boardB)
                 #swap boards a and b
                 board.boardA,board.boardB = board.boardB,board.boardA
         pygame.quit()
