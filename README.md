@@ -9,4 +9,5 @@ Implementation of Conway's Game of life in python using numpy and pygame to rend
   Save board - "s"\
   Open board - "o"\
   Next step - "n"\
+  Change colour - "c"\
 ![](cgol-gif.gif)
