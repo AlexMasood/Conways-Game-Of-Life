@@ -3,9 +3,9 @@ from pygame.constants import KEYDOWN
 from board import Board
 import numpy
 class main:
-    def __init__(self,pixelSize = 10, dimension = 100, colour = True):
+    def __init__(self, dimension = 100, colour = True):
         pygame.init()
-        self.pixelSize = pixelSize
+        self.pixelSize = int(1000/dimension)
         self.dimension = dimension
         self.setupScreen()
         self.run(colour)
@@ -34,6 +34,9 @@ class main:
                         board.saveBoard()
                     if(pygame.key.get_pressed()[pygame.K_o]):
                         board.loadBoard()
+                        #calculate dimensions and pixelSize in case loaded in board has different dimensions
+                        self.dimension = board.dimensions
+                        self.pixelSize = int(1000/self.dimension)
                     if(pygame.key.get_pressed()[pygame.K_c]):
                         colour = not colour
                     if(pygame.key.get_pressed()[pygame.K_n]):

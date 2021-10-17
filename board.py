@@ -14,6 +14,8 @@ class Board:
 
     def loadBoard(self):
         self.boardA = loadtxt("data.csv",delimiter=",")
+        self.dimensions = len(self.boardA)
+        self.boardB = self.boardA.copy()
         self.colourBoard = np.zeros((self.dimensions,self.dimensions))
         
     def randomBoard(self):
